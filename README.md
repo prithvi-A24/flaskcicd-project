@@ -1,81 +1,76 @@
-# Flask CI/CD Project
+# Flask CI/CD Pipeline using Jenkins and Docker
 
-A simple Flask application demonstrating a complete CI/CD pipeline using GitHub, Jenkins, Docker, and Python.
+## Project Overview
 
-## 🚀 Project Overview
+This project demonstrates a basic CI/CD pipeline for a Python Flask application using Jenkins, Docker, GitHub, and Docker Hub.
 
-This project demonstrates how code changes can automatically trigger a Jenkins pipeline that:
+The pipeline automatically:
 
-1. Fetches source code from GitHub
-2. Installs required dependencies
-3. Runs the Flask application build process
-4. Builds a Docker image
-5. Deploys the application using Docker
+* Pulls the latest code from GitHub
+* Installs Python dependencies from `requirements.txt`
+* Builds a Docker image
+* Pushes the Docker image to Docker Hub
 
-## 🛠️ Technologies Used
+---
 
-- Python
-- Flask
-- Git & GitHub
-- Jenkins
-- Docker
-- Linux
-
-## 📂 Project Structure
+## Project Structure
 
 ```
 flaskcicd-project/
 │
-├── app.py
-├── requirements.txt
-├── Dockerfile
-├── Jenkinsfile
-└── README.md
+├── app.py                 # Flask application
+├── requirements.txt       # Python dependencies
+├── Dockerfile             # Docker image instructions
+├── Jenkinsfile            # Jenkins CI pipeline
+├── deployment.yaml        # Kubernetes deployment file
+├── service.yaml           # Kubernetes service file
+└── README.md              # Project documentation
 ```
 
-## 🐍 Application Setup (Local)
+---
 
-### Clone the repository
+## Technologies Used
+
+* Python
+* Flask
+* Docker
+* Jenkins
+* GitHub
+* Docker Hub
+
+---
+
+## Application Setup
+
+### Clone Repository
 
 ```bash
-git clone https://github.com/<username>/flaskcicd-project.git
+git clone https://github.com/prithvi-A24/flaskcicd-project.git
+```
 
+Move into the project directory:
+
+```bash
 cd flaskcicd-project
 ```
 
-### Create Python virtual environment
+---
+
+## Run Flask Application Locally
+
+Install dependencies:
 
 ```bash
-python3 -m venv venv
+pip3 install --break-system-packages -r requirements.txt
 ```
 
-Activate environment:
-
-Linux/Mac:
+Run the application:
 
 ```bash
-source venv/bin/activate
+python3 app.py
 ```
 
-Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-### Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Run Flask application
-
-```bash
-python app.py
-```
-
-Application will start on:
+The application will start on:
 
 ```
 http://localhost:5000
@@ -83,147 +78,147 @@ http://localhost:5000
 
 ---
 
-# 🐳 Running with Docker
+# Docker Setup
 
-## Build Docker image
+## Build Docker Image
 
 ```bash
-docker build -t flask-app .
+docker build -t prithvia24/flask-app .
 ```
 
-## Run Docker container
+## Run Docker Container
 
 ```bash
-docker run -d -p 5000:5000 flask-app
+docker run -d -p 5000:5000 prithvia24/flask-app
 ```
 
-Check running containers:
+The application will be available at:
 
-```bash
-docker ps
+```
+http://localhost:5000
 ```
 
 ---
 
-# 🔄 Jenkins CI/CD Pipeline
+# Jenkins CI Pipeline
 
-The Jenkins pipeline is defined in the `Jenkinsfile`.
-
-Pipeline stages:
+## Pipeline Flow
 
 ```
+Developer
+    |
+    |
+    v
 GitHub Repository
-        |
-        ↓
- Jenkins Trigger
-        |
-        ↓
- Checkout Code
-        |
-        ↓
- Install Dependencies
-        |
-        ↓
- Build Application
-        |
-        ↓
- Build Docker Image
-        |
-        ↓
- Deploy Container
+    |
+    |
+    v
+Jenkins Pipeline
+    |
+    ├── Checkout Code
+    |
+    ├── Install Requirements
+    |
+    ├── Build Docker Image
+    |
+    └── Push Image to Docker Hub
 ```
 
-## Jenkins Pipeline Stages
+---
+
+## Jenkins Stages
 
 ### 1. Checkout
 
 Jenkins downloads the latest source code from GitHub.
 
-### 2. Install Dependencies
+### 2. Install Requirements
 
-Installs Python packages from:
-
-```
-requirements.txt
-```
-
-### 3. Build
-
-Builds and prepares the Flask application.
-
-### 4. Docker Build
-
-Creates a Docker image:
+Jenkins installs Python dependencies using:
 
 ```bash
-docker build -t flask-app .
+pip3 install --break-system-packages -r requirements.txt
 ```
 
-### 5. Deployment
+### 3. Docker Build
 
-Runs the application inside a Docker container.
+Jenkins creates a Docker image:
 
----
-
-# 📦 Requirements
-
-Example `requirements.txt`:
-
-```
-Flask
+```bash
+docker build -t prithvia24/flask-app:${BUILD_NUMBER} .
 ```
 
----
-
-# 🔐 Environment Variables
-
-The Jenkinsfile uses environment variables for configuration.
+The build number is automatically provided by Jenkins.
 
 Example:
 
-```groovy
-environment {
-    APP_NAME = "flask-app"
-}
+```
+prithvia24/flask-app:1
+prithvia24/flask-app:2
+prithvia24/flask-app:3
 ```
 
-Jenkins also provides built-in variables:
+### 4. Docker Push
 
-```
-BUILD_NUMBER
-JOB_NAME
-WORKSPACE
-GIT_COMMIT
-```
-
----
-
-# 🧪 Testing
-
-Run the application:
+Jenkins authenticates with Docker Hub using stored credentials and pushes the image:
 
 ```bash
-python app.py
-```
-
-Verify:
-
-```
-http://localhost:5000
+docker push prithvia24/flask-app:${BUILD_NUMBER}
 ```
 
 ---
 
-# 📌 Future Improvements
+# Docker Image Repository
 
-- Add automated unit tests
-- Push Docker images to Docker Hub
-- Add Kubernetes deployment
-- Add monitoring and logging
-- Add Jenkins notifications
+Docker Hub Repository:
+
+```
+prithvia24/flask-app
+```
+
+Images are stored using Jenkins build numbers as tags.
+
+Example:
+
+```
+prithvia24/flask-app:5
+```
 
 ---
 
-# 👨‍💻 Author
+# CI/CD Workflow
 
-Prithvi Amarnath
+Whenever code changes are pushed:
+
+```
+Code Change
+     |
+     v
+Git Push
+     |
+     v
+Jenkins Build Trigger
+     |
+     v
+Checkout Latest Code
+     |
+     v
+Install Dependencies
+     |
+     v
+Build Docker Image
+     |
+     v
+Push Image to Docker Hub
+```
+
+---
+
+## Future Improvements
+
+Possible next steps:
+
+* Add automated testing stage
+* Add deployment stage
+* Deploy Docker image to Cloud Run or Kubernetes
+* Add monitoring and logging

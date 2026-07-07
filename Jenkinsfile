@@ -62,6 +62,7 @@ pipeline {
                     docker push prithvia24/flask-app:${BUILD_NUMBER}
                     '''
                 }
+            }
         stage('Deploy') {
             steps {
                 sh '''

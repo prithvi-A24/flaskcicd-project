@@ -17,7 +17,11 @@ pipeline {
             }
         }
 
-
+        stage('Install Requirements') {
+            steps {
+                 sh 'pip3 install -r requirements.txt'
+             }
+        }
         stage('Check Python') {
             steps {
                 sh 'python3 --version'

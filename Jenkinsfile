@@ -34,7 +34,7 @@ pipeline {
 
         stage('Docker Build Image') {
             steps {
-                sh 'docker build -t prithvi/flask-app:${BUILD_NUMBER} .'
+                sh 'docker build -t prithvia24/flask-app:${BUILD_NUMBER} .'
             }
         }
 
@@ -55,7 +55,7 @@ pipeline {
                     -u $DOCKER_USER \
                     --password-stdin
 
-                    docker push prithvi/flask-app:${BUILD_NUMBER}
+                    docker push prithvia24/flask-app:${BUILD_NUMBER}
                     '''
                 }
             }

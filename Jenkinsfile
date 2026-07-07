@@ -62,6 +62,19 @@ pipeline {
                     docker push prithvia24/flask-app:${BUILD_NUMBER}
                     '''
                 }
+         stage('Deploy') {
+            steps {
+                sh '''
+                docker stop flask-container || true
+                docker rm flask-container || true
+
+                docker run -d \
+                --name flask-container \
+                -p 5000:5000 \
+                prithvia24/flask-app:${BUILD_NUMBER}
+                '''
+            }
+        }
             }
         }
 

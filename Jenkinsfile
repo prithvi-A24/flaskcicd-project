@@ -65,7 +65,7 @@ pipeline {
 
                 docker run -d \
                   --name flask-container \
-                  -p 5000:5000 \
+                  -p 8000:8000 \
                   prithvia24/flask-app:${BUILD_NUMBER}
                 '''
             }

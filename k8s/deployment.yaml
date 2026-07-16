@@ -22,7 +22,7 @@ spec:
       containers:
 
       - name: flask-container
-        image: flask-app:v1
+        image: prithvia24/flask-app:6
         imagePullPolicy: Always
 
         ports:
